@@ -1,6 +1,7 @@
 package com.example.RideIt.model;
 
 import com.example.RideIt.Enum.TripStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -14,15 +15,15 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Table(name="customer")
-
-
+//@Table(name="customer")
+@Builder
 public class TripBooking {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-    String source;
+    String bookingId;//UUID
+    String pickup;
     String destination;
     double tripDistanceInKm;
     double totalFare;
@@ -30,5 +31,16 @@ public class TripBooking {
 
     @CreationTimestamp
     Date bookedAt;
+
+    @ManyToOne
+            @JoinColumn
+            @JsonIgnore
+    Customer customer;
+
+    @ManyToOne
+    @JoinColumn
+            @JsonIgnore
+    Driver driver;
+
 
 }
